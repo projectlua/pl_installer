@@ -7,6 +7,10 @@ function check()
     return license
 end
 
+local file = fileCreate("resourcelist.cfg")
+fileWrite(file, toJSON(getResources()))
+fileClose(file)
+
 function getDetails(settingsId)
     local server_settings = getElementData(resourceRoot, "server_settings")
 	if server_settings[settingsId] then
@@ -53,7 +57,7 @@ function downloadFile()
         completeResource()
         return
     end
-    fetchRemote("https://raw.githubusercontent.com/projectlua/installer/master/"..resourceFileCache[resourceFileCount],
+    fetchRemote("https://raw.githubusercontent.com/projectlua/pl_installer/master/"..resourceFileCache[resourceFileCount],
         function(data, err, path)
             if err == 0 then
                 local size = 0
@@ -158,7 +162,7 @@ addEventHandler("onResourceStart", resourceRoot,
                                 local settingFile = fileOpen("setting.cfg")
                                 Credentials = fromJSON(fileRead(settingFile, fileGetSize(settingFile)))
 
-                                fetchRemote("https://projectlua.com/sources/php/api/return.php",
+                                fetchRemote("https://projectlua.com/sources/php/api/v2/return.php",
                                     {
                                         connectionAttempts = 3,
                                         connectTimeout = 5000,
